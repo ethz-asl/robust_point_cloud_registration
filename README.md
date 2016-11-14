@@ -31,7 +31,7 @@ G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Regi
    Booktitle = {Proc. of The International Conference on Intelligent Robots and Systems (IROS)},
    Year = {2016}
 }
-
+```
 G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Registration with Probabilistic Data Association](https://github.com/ethz-asl/ipda/wiki/0383.pdf)", in International Conference on Intelligent Robots and Systems (IROS), 2016.
 
 ```
@@ -41,3 +41,4 @@ G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Regi
    Booktitle = {Proc. of The International Conference on Intelligent Robots and Systems (IROS)},
    Year = {2016}
 }
+```
