@@ -18,3 +18,4 @@ G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "Point Clouds Regis
    Year = {2016}
 }
 ```
+![](https://github.com/ethz-asl/fw_mapper/wiki/ipda.png)
