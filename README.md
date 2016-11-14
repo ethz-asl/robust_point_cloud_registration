@@ -47,3 +47,9 @@ P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stast
 
 # Datasets
 Several laser and vision point-clouds will be available at http://projects.asl.ethz.ch/datasets
+
+# Dependencies
+```
+git@github.com:ethz-asl/thirdparty_submodules.git
+git@github.com:ethz-asl/catkin_simple.git
+```
