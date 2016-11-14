@@ -1,7 +1,7 @@
 # Iterative Probabilistic Data Association (IPDA)
 
-Authors: 
-Simone Fontana (simone.fontana@disco.unimib.it)
-Gabriel Agamennoni (g.agamennoni@gmail.com)
+Authors: <br>
+Simone Fontana (simone.fontana@disco.unimib.it)<br>
+Gabriel Agamennoni (g.agamennoni@gmail.com)<br>
 Timo Hinzmann (hitimo@ethz.ch)
 
