@@ -1,0 +1,11 @@
+--v=1
+--alsologtostderr=true
+
+--pda_source_cloud=/media/timo/scnd/experiments/pointcloud_registration/sweden/cropped.pcd
+--pda_target_cloud=/media/timo/scnd/experiments/pointcloud_registration/sweden/cropped.pcd
+--pda_source_filter_size=0
+--pda_radius=70
+--pda_max_neighbours=70
+--delta_tx=1.0
+--delta_ty=0.0
+--delta_tz=1.0
