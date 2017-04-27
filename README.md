@@ -46,7 +46,7 @@ P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stast
 ```
 
 # Datasets
-Several laser and vision point-clouds will be available at http://projects.asl.ethz.ch/datasets
+Laser and vision point clouds are available at http://projects.asl.ethz.ch/datasets
 
 # Dependencies
 ```
