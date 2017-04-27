@@ -39,7 +39,7 @@ P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stast
 @inproceedings{DBLP:conf/prima/DohertyKRWCBHS16,
   author    = {Patrick Doherty and Jonas Kvarnstr{\"{o}}m and Piotr Rudol and Mariusz Wzorek and Gianpaolo Conte and Cyrille Berger and Timo Hinzmann and Thomas Stastny},
   title     = {A Collaborative Framework for 3D Mapping Using Unmanned Aerial Vehicles},
-  booktitle = {{PRIMA} 2016: Princiles and Practice of Multi-Agent Systems - 19th
+  booktitle = {{PRIMA} 2016: Principles and Practice of Multi-Agent Systems - 19th
                International Conference, Phuket, Thailand, August 22-26, 2016, Proceedings},
   year      = {2016},
 }
