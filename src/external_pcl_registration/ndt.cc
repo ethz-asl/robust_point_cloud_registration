@@ -8,7 +8,7 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include <boost/thread/thread.hpp>
 
-#include "point_cloud_registration/ndt.h"
+#include "external_pcl_registration/ndt.h"
 
 
 typedef pcl::PointXYZ PointType;
