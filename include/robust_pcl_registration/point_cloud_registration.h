@@ -1,5 +1,5 @@
-#ifndef PROB_POINT_CLOUD_REGISTRATION_POINT_CLOUD_REGISTRATION_H
-#define PROB_POINT_CLOUD_REGISTRATION_POINT_CLOUD_REGISTRATION_H
+#ifndef POINT_CLOUD_REGISTRATION_POINT_CLOUD_REGISTRATION_H
+#define POINT_CLOUD_REGISTRATION_POINT_CLOUD_REGISTRATION_H
 
 #include <ceres/ceres.h>
 #include <Eigen/Core>
@@ -9,18 +9,18 @@
 
 #include <vector>
 
-#include "prob_point_cloud_registration/error_term.hpp"
-#include "prob_point_cloud_registration/probabilistic_weights.hpp"
-#include "prob_point_cloud_registration/weight_updater_callback.hpp"
-#include "prob_point_cloud_registration/point_cloud_registration_params.hpp"
+#include "robust_pcl_registration/error_term.hpp"
+#include "robust_pcl_registration/probabilistic_weights.hpp"
+#include "robust_pcl_registration/weight_updater_callback.hpp"
+#include "robust_pcl_registration/point_cloud_registration_params.hpp"
 
-namespace prob_point_cloud_registration
+namespace point_cloud_registration
 {
 
-class PointCloudRegistrationIteration
+class PointCloudRegistration
 {
 public:
-    PointCloudRegistrationIteration(
+    PointCloudRegistration(
         const pcl::PointCloud<pcl::PointXYZ> &source_cloud,
         const pcl::PointCloud<pcl::PointXYZ> &target_cloud,
         const Eigen::SparseMatrix<int, Eigen::RowMajor> &data_association,
@@ -39,6 +39,6 @@ private:
     PointCloudRegistrationParams parameters_;
 };
 
-}  // prob_namespace point_cloud_registration
+}  // namespace point_cloud_registration
 
 #endif

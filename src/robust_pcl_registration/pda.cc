@@ -1,4 +1,4 @@
-#include "point_cloud_registration/pda.h"
+#include "robust_pcl_registration/pda.h"
 
 #include <glog/logging.h>
 #include <pcl/common/common_headers.h>
@@ -11,8 +11,8 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/visualization/pcl_visualizer.h>
 
-#include "point_cloud_registration/point_cloud_registration.h"
-#include "prob_point_cloud_registration/point_cloud_registration_iteration.h"
+#include "robust_pcl_registration/point_cloud_registration.h"
+//#include "prob_point_cloud_registration/point_cloud_registration_iteration.h"
 
 Pda::Pda(const PdaParameters& params)
   : params_(params) {}
@@ -131,4 +131,3 @@ void Pda::evaluate(
     viewer->spin();
   }
 }
-

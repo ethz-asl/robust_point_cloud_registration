@@ -12,14 +12,22 @@
 typedef pcl::PointXYZ PointType;
 
 struct GicpParameters {
-  int max_neighbours;
-  bool use_gaussian;
-  double radius;
-  std::string source_cloud;
-  std::string target_cloud;
+  std::string source_cloud_filename;
+  std::string target_cloud_filename;
+  std::string aligned_cloud_filename;
   double source_filter_size;
   double target_filter_size;
-  int dof;
+  bool visualize_clouds;
+  bool save_aligned_cloud;
+  std::string frame_id;
+  double transformation_epsilon;
+  int maximum_iterations;
+  int maximum_optimizer_iterations;
+  double maximum_correspondence_distance;
+  int ransac_iterations;
+  double ransac_outlier_rejection_threshold;
+  bool use_reciprocal_correspondence;
+  bool use_default_parameters;
 };
 
 class Gicp {
@@ -27,10 +35,9 @@ class Gicp {
     Gicp(const GicpParameters& params);
     void evaluate(
         pcl::PointCloud<PointType>::Ptr source_cloud,
-        pcl::PointCloud<PointType>::Ptr target_cloud,
-        const Eigen::Vector3d& delta_t);
+        pcl::PointCloud<PointType>::Ptr target_cloud);
  private:
   GicpParameters params_;
 };
 
-#endif // PDA_H_
+#endif // GICP_H_

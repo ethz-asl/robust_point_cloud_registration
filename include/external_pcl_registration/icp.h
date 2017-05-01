@@ -1,6 +1,8 @@
-#ifndef NDT_H_
-#define NDT_H_
+#ifndef ICP_H_
+#define ICP_H_
 
+#include <Eigen/Core>
+#include <Eigen/Sparse>
 #include <pcl/common/common_headers.h>
 #include <pcl/common/transforms.h>
 #include <pcl/console/parse.h>
@@ -11,26 +13,27 @@
 
 typedef pcl::PointXYZ PointType;
 
-struct NdtParameters {
+struct IcpParameters {
   int max_neighbours;
-  bool use_gaussian;
   double radius;
-  std::string source_cloud;
-  std::string target_cloud;
+  std::string source_cloud_filename;
+  std::string target_cloud_filename;
+  std::string aligned_cloud_filename;
   double source_filter_size;
   double target_filter_size;
-  int dof;
+  bool visualize_clouds;
+  bool save_aligned_cloud;
+  std::string frame_id;
 };
 
-class Ndt {
+class Icp {
  public:
-    Ndt(const NdtParameters& params);
+    Icp(const IcpParameters& params);
     void evaluate(
         pcl::PointCloud<PointType>::Ptr source_cloud,
-        pcl::PointCloud<PointType>::Ptr target_cloud,
-        const Eigen::Vector3d& delta_t);
+        pcl::PointCloud<PointType>::Ptr target_cloud);
  private:
-  NdtParameters params_;
+  IcpParameters params_;
 };
 
-#endif // NDT_H_
+#endif // ICP_H_

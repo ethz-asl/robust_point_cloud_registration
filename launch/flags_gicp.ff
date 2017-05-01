@@ -1,0 +1,15 @@
+--v=1
+--alsologtostderr=true
+--gicp_source_cloud_filename=../samples/bunny/source.pcd
+--gicp_target_cloud_filename=../samples/bunny/target.pcd
+--gicp_aligned_cloud_filename=../samples/bunny/aligned.pcd
+--gicp_source_filter_size=0
+--gicp_frame_id=map
+--gicp_transformation_epsilon=0.0005
+--gicp_maximum_iterations=200
+--gicp_maximum_optimizer_iterations=20
+--gicp_maximum_correspondence_distance=5
+--gicp_ransac_iterations=0
+--gicp_ransac_outlier_rejection_threshold=0.05
+--gicp_use_reciprocal_correspondence=false
+--gicp_use_default_parameters=true

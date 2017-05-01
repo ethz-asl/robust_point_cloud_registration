@@ -9,26 +9,39 @@ catkin_simple(ALL_DEPS_REQUIRED)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 cs_add_library(${PROJECT_NAME}
-  src/point_cloud_registration.cc
-  include/point_cloud_registration/weight_updater_callback.hpp
-  include/point_cloud_registration/point_cloud_registration_params.hpp
-  include/point_cloud_registration/probabilistic_weights.hpp
-  include/point_cloud_registration/error_term.hpp
-  src/point_cloud_registration_iteration.cc
-  include/prob_point_cloud_registration/weight_updater_callback.hpp
-  include/prob_point_cloud_registration/point_cloud_registration_params.hpp
-  include/prob_point_cloud_registration/probabilistic_weights.hpp
-  include/prob_point_cloud_registration/error_term.hpp
-  src/pda.cc
-  include/point_cloud_registration/pda.h
-  src/gicp.cc
-  include/point_cloud_registration/gicp.h
-  src/icp.cc
-  include/point_cloud_registration/icp.h
-  src/ndt.cc
-  include/point_cloud_registration/ndt.h)
+  src/robust_pcl_registration/point_cloud_registration.cc
+  #src/robust_pcl_registration/point_cloud_registration_iteration.cc
+  src/robust_pcl_registration/pda.cc
+  src/external_pcl_registration/gicp.cc
+  src/external_pcl_registration/icp.cc
+  src/external_pcl_registration/ndt.cc)
 
-cs_add_executable(pda src/main.cc)
+# Pointcloud alignment using ICP.
+cs_add_executable(icp src/main_icp.cc)
+target_link_libraries(icp ${PROJECT_NAME})
+
+# Pointcloud alignment using GICP.
+cs_add_executable(gicp src/main_gicp.cc)
+target_link_libraries(gicp ${PROJECT_NAME})
+
+# Pointcloud alignment using NDT.
+cs_add_executable(ndt src/main_ndt.cc)
+target_link_libraries(ndt ${PROJECT_NAME})
+
+# Pointcloud alignment using IPDA ("Robust ICP").
+#cs_add_executable(icp src/main.cc)
+#target_link_libraries(icp ${PROJECT_NAME})
+
+# Executable to convert pointcloud .xyz to .pcd format.
+cs_add_executable(xyz_to_pcd src/main_xyz_to_pcd.cc)
+
+#############
+# QTCREATOR #
+#############
+FILE(GLOB_RECURSE LibFiles "include/*")
+add_custom_target(headers SOURCES ${LibFiles})
 
 cs_install()
 cs_export()
+
+

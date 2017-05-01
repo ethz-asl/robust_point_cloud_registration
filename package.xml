@@ -3,9 +3,8 @@
   <name>point_cloud_registration</name>
   <version>0.0.0</version>
   <description>A point cloud registration software</description>
+  <maintainer email="timo.hinzmann@gmail.com">Timo Hinzmann</maintainer>
   <maintainer email="fontana.simone@outlook.com">Simone Fontana</maintainer>
-  <maintainer email="g.agamennoni@gmail.com">Gabriel Agamennoni</maintainer>
-  <maintainer email="hitimo@ethz.ch">Timo Hinzmann</maintainer>
   <license>ASL</license>
 
   <buildtool_depend>catkin</buildtool_depend>
@@ -17,4 +16,5 @@
   <depend>VTK</depend>
   <depend>glog_catkin</depend>
   <depend>gflags_catkin</depend>
+  <depend>pcl_catkin</depend>
 </package>
