@@ -20,10 +20,15 @@ struct NdtParameters {
   bool visualize_clouds;
   bool save_aligned_cloud;
   std::string frame_id;
+  /// Minimum transformation difference for termination condition.
   double transformation_epsilon;
+  /// Maximum step size for More-Thuente line search.
   double step_size;
+  /// Resolution of NDT grid structure (VoxelGridCovariance).
   double resolution;
+  /// Maximum number of registration iterations.
   int maximum_iterations;
+  bool use_default_parameters;
 };
 
 class Ndt {
