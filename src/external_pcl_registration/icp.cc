@@ -12,10 +12,7 @@
 #include <pcl/registration/icp.h>
 #include <pcl_ros/point_cloud.h>
 #include <pcl/visualization/pcl_visualizer.h>
-#include <ros/ros.h>
 
-
-typedef pcl::PointXYZ PointType;
 
 Icp::Icp(const IcpParameters& params)
   : params_(params) {}
@@ -33,7 +30,7 @@ void Icp::evaluate(
   LOG(INFO) << "MaxCorrespondenceDistance: " << icp.getMaxCorrespondenceDistance();
   LOG(INFO) << "RANSACOutlierRejectionThreshold: " << icp.getRANSACOutlierRejectionThreshold();
 
-   pcl::PointCloud<PointType>::Ptr aligned_source =
+  pcl::PointCloud<PointType>::Ptr aligned_source =
       boost::make_shared<pcl::PointCloud<PointType>>();
   icp.align(*aligned_source);
   LOG(INFO) << "Final transformation: " << std::endl << icp.getFinalTransformation();
@@ -43,7 +40,6 @@ void Icp::evaluate(
   } else {
     LOG(INFO) << "ICP did not converge.";
   }
-  pcl::transformPointCloud(*source_cloud, *aligned_source, icp.getFinalTransformation());
 
   if (params_.save_aligned_cloud) {
     LOG(INFO) << "Saving aligned source cloud to: " << params_.aligned_cloud_filename;
@@ -56,7 +52,7 @@ void Icp::evaluate(
     aligned_source->header.frame_id = params_.frame_id;
     std::shared_ptr<pcl::visualization::PCLVisualizer> viewer
         (new pcl::visualization::PCLVisualizer ("ICP: source(red), target(green), aligned(blue)"));
-    viewer->setBackgroundColor (255, 255, 255);
+    viewer->setBackgroundColor(255, 255, 255);
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
         source_cloud_handler(source_cloud, 255, 0, 0);
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
@@ -64,8 +60,8 @@ void Icp::evaluate(
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
         aligned_source_handler(aligned_source, 0, 0, 255);
     viewer->addPointCloud<pcl::PointXYZ>(source_cloud, source_cloud_handler, "source");
-    viewer->addPointCloud<pcl::PointXYZ> (target_cloud, target_cloud_handler, "target");
-    viewer->addPointCloud<pcl::PointXYZ> (aligned_source, aligned_source_handler, "aligned source");
+    viewer->addPointCloud<pcl::PointXYZ>(target_cloud, target_cloud_handler, "target");
+    viewer->addPointCloud<pcl::PointXYZ>(aligned_source, aligned_source_handler, "aligned source");
     viewer->spin();
   }
 }
