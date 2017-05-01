@@ -21,12 +21,12 @@ cs_add_executable(icp src/main_icp.cc)
 target_link_libraries(icp ${PROJECT_NAME})
 
 # Pointcloud alignment using GICP.
-#cs_add_executable(icp src/main.cc)
-#target_link_libraries(icp ${PROJECT_NAME})
+cs_add_executable(gicp src/main_gicp.cc)
+target_link_libraries(gicp ${PROJECT_NAME})
 
 # Pointcloud alignment using NDT.
-#cs_add_executable(icp src/main.cc)
-#target_link_libraries(icp ${PROJECT_NAME})
+cs_add_executable(ndt src/main_ndt.cc)
+target_link_libraries(ndt ${PROJECT_NAME})
 
 # Pointcloud alignment using IPDA ("Robust ICP").
 #cs_add_executable(icp src/main.cc)
@@ -34,10 +34,6 @@ target_link_libraries(icp ${PROJECT_NAME})
 
 # Executable to convert pointcloud .xyz to .pcd format.
 cs_add_executable(xyz_to_pcd src/main_xyz_to_pcd.cc)
-
-# Executable evaluate all registration methods listed above.
-#cs_add_executable(xyz_to_pcd src/main_xyz_to_pcd.cc)
-#target_link_libraries(xyz_to_pcd  ${PROJECT_NAME})
 
 #############
 # QTCREATOR #

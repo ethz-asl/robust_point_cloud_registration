@@ -1,0 +1,5 @@
+--v=1
+--alsologtostderr=true
+
+--in_cloud_xyz=../samples/bunny/target.xyz
+--out_cloud_pcd=../samples/bunny/target.pcd
