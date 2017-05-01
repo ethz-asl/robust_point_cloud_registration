@@ -12,14 +12,18 @@
 typedef pcl::PointXYZ PointType;
 
 struct NdtParameters {
-  int max_neighbours;
-  bool use_gaussian;
-  double radius;
-  std::string source_cloud;
-  std::string target_cloud;
+  std::string source_cloud_filename;
+  std::string target_cloud_filename;
+  std::string aligned_cloud_filename;
   double source_filter_size;
   double target_filter_size;
-  int dof;
+  bool visualize_clouds;
+  bool save_aligned_cloud;
+  std::string frame_id;
+  double transformation_epsilon;
+  double step_size;
+  double resolution;
+  int maximum_iterations;
 };
 
 class Ndt {
@@ -27,8 +31,7 @@ class Ndt {
     Ndt(const NdtParameters& params);
     void evaluate(
         pcl::PointCloud<PointType>::Ptr source_cloud,
-        pcl::PointCloud<PointType>::Ptr target_cloud,
-        const Eigen::Vector3d& delta_t);
+        pcl::PointCloud<PointType>::Ptr target_cloud);
  private:
   NdtParameters params_;
 };

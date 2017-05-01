@@ -1,14 +1,12 @@
-#include <iostream>
+#include "external_pcl_registration/ndt.h"
+
+#include <glog/logging.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
-
 #include <pcl/registration/ndt.h>
 #include <pcl/filters/approximate_voxel_grid.h>
-
 #include <pcl/visualization/pcl_visualizer.h>
 #include <boost/thread/thread.hpp>
-
-#include "external_pcl_registration/ndt.h"
 
 
 typedef pcl::PointXYZ PointType;
@@ -17,103 +15,68 @@ Ndt::Ndt(const NdtParameters& params)
   : params_(params) {}
 
 void Ndt::evaluate(
-    pcl::PointCloud<PointType>::Ptr source_cloud2,
-    pcl::PointCloud<PointType>::Ptr target_cloud2,
-    const Eigen::Vector3d& translation) {
+    pcl::PointCloud<PointType>::Ptr source_cloud,
+    pcl::PointCloud<PointType>::Ptr target_cloud) {
+  CHECK(source_cloud);
+  CHECK(target_cloud);
 
-  // Loading first scan of room.
-  pcl::PointCloud<pcl::PointXYZ>::Ptr target_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  if (pcl::io::loadPCDFile<pcl::PointXYZ> ("/tmp/room_scan1.pcd", *target_cloud) == -1)
-  {
-    PCL_ERROR ("Couldn't read file room_scan1.pcd \n");
-    return;
-  }
-  std::cout << "Loaded " << target_cloud->size () << " data points from room_scan1.pcd" << std::endl;
-
-  // Loading second scan of room from new perspective.
-  pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  if (pcl::io::loadPCDFile<pcl::PointXYZ> ("/tmp/room_scan2.pcd", *input_cloud) == -1)
-  {
-    PCL_ERROR ("Couldn't read file room_scan2.pcd \n");
-    return;
-  }
-  std::cout << "Loaded " << input_cloud->size () << " data points from room_scan2.pcd" << std::endl;
-
-  // Filtering input scan to roughly 10% of original size to increase speed of registration.
-  pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::ApproximateVoxelGrid<pcl::PointXYZ> approximate_voxel_filter;
-  approximate_voxel_filter.setLeafSize (0.2, 0.2, 0.2);
-  approximate_voxel_filter.setInputCloud (input_cloud);
-  approximate_voxel_filter.filter (*filtered_cloud);
-  std::cout << "Filtered cloud contains " << filtered_cloud->size ()
-            << " data points from room_scan2.pcd" << std::endl;
-
-  // Initializing Normal Distributions Transform (NDT).
   pcl::NormalDistributionsTransform<pcl::PointXYZ, pcl::PointXYZ> ndt;
+  ndt.setInputSource(source_cloud);
+  ndt.setInputTarget(target_cloud);
 
-  // Setting scale dependent NDT parameters
+  // Setting scale dependent NDT parameters.
   // Setting minimum transformation difference for termination condition.
-  ndt.setTransformationEpsilon (0.01);
+  ndt.setTransformationEpsilon(params_.transformation_epsilon);
   // Setting maximum step size for More-Thuente line search.
-  ndt.setStepSize (0.1);
-  //Setting Resolution of NDT grid structure (VoxelGridCovariance).
-  ndt.setResolution (1.0);
-
+  ndt.setStepSize(params_.step_size);
+  // Setting Resolution of NDT grid structure (VoxelGridCovariance).
+  ndt.setResolution(params_.resolution);
   // Setting max number of registration iterations.
-  ndt.setMaximumIterations (35);
+  ndt.setMaximumIterations(params_.maximum_iterations);
 
-  // Setting point cloud to be aligned.
-  ndt.setInputSource (filtered_cloud);
-  // Setting point cloud to be aligned to.
-  ndt.setInputTarget (target_cloud);
+  LOG(INFO) << "MaxCorrespondenceDistance: " << ndt.getMaxCorrespondenceDistance();
+  LOG(INFO) << "RANSACOutlierRejectionThreshold: " << ndt.getRANSACOutlierRejectionThreshold();
+  LOG(INFO) << "TransformationEpsilon" << ndt.getTransformationEpsilon();
+  LOG(INFO) << "StepSize: " << ndt.getStepSize();
+  LOG(INFO) << "Resolution: " << ndt.getResolution();
+  LOG(INFO) << "MaximumIterations: " << ndt.getMaximumIterations();
 
-  // Set initial alignment estimate found using robot odometry.
-  Eigen::AngleAxisf init_rotation (0.6931, Eigen::Vector3f::UnitZ ());
-  Eigen::Translation3f init_translation (1.79387, 0.720047, 0);
-  Eigen::Matrix4f init_guess = (init_translation * init_rotation).matrix ();
 
-  // Calculating required rigid transform to align the input cloud to the target cloud.
-  pcl::PointCloud<pcl::PointXYZ>::Ptr output_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  ndt.align (*output_cloud, init_guess);
+  pcl::PointCloud<PointType>::Ptr aligned_source =
+      boost::make_shared<pcl::PointCloud<PointType>>();
+  ndt.align(*aligned_source);
+  LOG(INFO) << "Final transformation: " << std::endl << ndt.getFinalTransformation();
+  if (ndt.hasConverged()) {
+    LOG(INFO) << "NDT converged." << std::endl
+              << "The score is " << ndt.getFitnessScore();
+  } else {
+    LOG(INFO) << "NDT did not converge.";
+  }
+  //pcl::transformPointCloud(*source_cloud, *aligned_source, ndt.getFinalTransformation());
 
-  std::cout << "Normal Distributions Transform has converged:" << ndt.hasConverged ()
-            << " score: " << ndt.getFitnessScore () << std::endl;
+  if (params_.save_aligned_cloud) {
+    LOG(INFO) << "Saving aligned source cloud to: " << params_.aligned_cloud_filename;
+    pcl::io::savePCDFile(params_.aligned_cloud_filename, *aligned_source);
+  }
 
-  // Transforming unfiltered, input cloud using found transform.
-  pcl::transformPointCloud (*input_cloud, *output_cloud, ndt.getFinalTransformation ());
-
-  // Saving transformed input cloud.
-  pcl::io::savePCDFileASCII ("room_scan2_transformed.pcd", *output_cloud);
-
-  // Initializing point cloud visualizer
-  boost::shared_ptr<pcl::visualization::PCLVisualizer>
-  viewer_final (new pcl::visualization::PCLVisualizer ("3D Viewer"));
-  viewer_final->setBackgroundColor (0, 0, 0);
-
-  // Coloring and visualizing target cloud (red).
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
-  target_color (target_cloud, 255, 0, 0);
-  viewer_final->addPointCloud<pcl::PointXYZ> (target_cloud, target_color, "target cloud");
-  viewer_final->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE,
-                                                  1, "target cloud");
-
-  // Coloring and visualizing transformed input cloud (green).
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
-  output_color (output_cloud, 0, 255, 0);
-  viewer_final->addPointCloud<pcl::PointXYZ> (output_cloud, output_color, "output cloud");
-  viewer_final->setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE,
-                                                  1, "output cloud");
-
-  // Starting visualizer
-//  viewer_final->addCoordinateSystem (1.0, "global");
-//  viewer_final->initCameraParameters ();
-
-//  // Wait until visualizer window is closed.
-//  while (!viewer_final->wasStopped ())
-//  {
-//    viewer_final->spinOnce (100);
-//    boost::this_thread::sleep (boost::posix_time::microseconds (100000));
-//  }
+  if (params_.visualize_clouds) {
+    source_cloud->header.frame_id = params_.frame_id;
+    target_cloud->header.frame_id = params_.frame_id;
+    aligned_source->header.frame_id = params_.frame_id;
+    std::shared_ptr<pcl::visualization::PCLVisualizer> viewer
+        (new pcl::visualization::PCLVisualizer ("NDT: source(red), target(green), aligned(blue)"));
+    viewer->setBackgroundColor (255, 255, 255);
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
+        source_cloud_handler(source_cloud, 255, 0, 0);
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
+        target_cloud_handler(target_cloud, 0, 255, 0);
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
+        aligned_source_handler(aligned_source, 0, 0, 255);
+    viewer->addPointCloud<pcl::PointXYZ>(source_cloud, source_cloud_handler, "source");
+    viewer->addPointCloud<pcl::PointXYZ> (target_cloud, target_cloud_handler, "target");
+    viewer->addPointCloud<pcl::PointXYZ> (aligned_source, aligned_source_handler, "aligned source");
+    viewer->spin();
+  }
 
   return;
 }
