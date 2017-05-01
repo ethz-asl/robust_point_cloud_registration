@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#include "point_cloud_registration/error_term.hpp"
-#include "point_cloud_registration/point_cloud_registration_params.hpp"
+#include "robust_pcl_registration/error_term.hpp"
+#include "robust_pcl_registration/point_cloud_registration_params.hpp"
 
 namespace point_cloud_registration
 {
