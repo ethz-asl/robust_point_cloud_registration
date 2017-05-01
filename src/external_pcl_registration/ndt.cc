@@ -9,8 +9,6 @@
 #include <boost/thread/thread.hpp>
 
 
-typedef pcl::PointXYZ PointType;
-
 Ndt::Ndt(const NdtParameters& params)
   : params_(params) {}
 
@@ -24,23 +22,18 @@ void Ndt::evaluate(
   ndt.setInputSource(source_cloud);
   ndt.setInputTarget(target_cloud);
 
-  // Setting scale dependent NDT parameters.
-  // Setting minimum transformation difference for termination condition.
-  ndt.setTransformationEpsilon(params_.transformation_epsilon);
-  // Setting maximum step size for More-Thuente line search.
-  ndt.setStepSize(params_.step_size);
-  // Setting Resolution of NDT grid structure (VoxelGridCovariance).
-  ndt.setResolution(params_.resolution);
-  // Setting max number of registration iterations.
-  ndt.setMaximumIterations(params_.maximum_iterations);
-
+  if (!params_.use_default_parameters) {
+    ndt.setTransformationEpsilon(params_.transformation_epsilon);
+    ndt.setStepSize(params_.step_size);
+    ndt.setResolution(params_.resolution);
+    ndt.setMaximumIterations(params_.maximum_iterations);
+  }
   LOG(INFO) << "MaxCorrespondenceDistance: " << ndt.getMaxCorrespondenceDistance();
   LOG(INFO) << "RANSACOutlierRejectionThreshold: " << ndt.getRANSACOutlierRejectionThreshold();
   LOG(INFO) << "TransformationEpsilon" << ndt.getTransformationEpsilon();
   LOG(INFO) << "StepSize: " << ndt.getStepSize();
   LOG(INFO) << "Resolution: " << ndt.getResolution();
   LOG(INFO) << "MaximumIterations: " << ndt.getMaximumIterations();
-
 
   pcl::PointCloud<PointType>::Ptr aligned_source =
       boost::make_shared<pcl::PointCloud<PointType>>();
@@ -52,7 +45,6 @@ void Ndt::evaluate(
   } else {
     LOG(INFO) << "NDT did not converge.";
   }
-  //pcl::transformPointCloud(*source_cloud, *aligned_source, ndt.getFinalTransformation());
 
   if (params_.save_aligned_cloud) {
     LOG(INFO) << "Saving aligned source cloud to: " << params_.aligned_cloud_filename;
@@ -65,7 +57,7 @@ void Ndt::evaluate(
     aligned_source->header.frame_id = params_.frame_id;
     std::shared_ptr<pcl::visualization::PCLVisualizer> viewer
         (new pcl::visualization::PCLVisualizer ("NDT: source(red), target(green), aligned(blue)"));
-    viewer->setBackgroundColor (255, 255, 255);
+    viewer->setBackgroundColor(255, 255, 255);
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
         source_cloud_handler(source_cloud, 255, 0, 0);
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
@@ -73,8 +65,8 @@ void Ndt::evaluate(
     pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
         aligned_source_handler(aligned_source, 0, 0, 255);
     viewer->addPointCloud<pcl::PointXYZ>(source_cloud, source_cloud_handler, "source");
-    viewer->addPointCloud<pcl::PointXYZ> (target_cloud, target_cloud_handler, "target");
-    viewer->addPointCloud<pcl::PointXYZ> (aligned_source, aligned_source_handler, "aligned source");
+    viewer->addPointCloud<pcl::PointXYZ>(target_cloud, target_cloud_handler, "target");
+    viewer->addPointCloud<pcl::PointXYZ>(aligned_source, aligned_source_handler, "aligned source");
     viewer->spin();
   }
 
