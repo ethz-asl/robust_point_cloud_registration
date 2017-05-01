@@ -1,0 +1,9 @@
+--v=1
+--alsologtostderr=true
+--icp_source_cloud_filename=../samples/bunny/source.pcd
+--icp_target_cloud_filename=../samples/bunny/target.pcd
+--icp_aligned_cloud_filename=../samples/bunny/aligned.pcd
+--icp_source_filter_size=0
+--icp_radius=70
+--icp_max_neighbours=70
+--icp_frame_id=map
