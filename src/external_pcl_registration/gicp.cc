@@ -1,4 +1,4 @@
-#include "point_cloud_registration/gicp.h"
+#include "external_pcl_registration/gicp.h"
 
 #include <glog/logging.h>
 #include <pcl/common/common_headers.h>
@@ -24,9 +24,11 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/console/parse.h>
+#include <Eigen/Sparse>
+#include <Eigen/Core>
 
-#include "point_cloud_registration/point_cloud_registration.h"
-#include "prob_point_cloud_registration/point_cloud_registration_iteration.h"
+//#include "point_cloud_registration/point_cloud_registration.h"
+//#include "prob_point_cloud_registration/point_cloud_registration_iteration.h"
 
 //using prob_point_cloud_registration::PointCloudRegistrationIteration;
 //using prob_point_cloud_registration::PointCloudRegistrationParams;
