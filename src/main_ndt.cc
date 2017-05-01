@@ -22,6 +22,7 @@ DEFINE_double(ndt_transformation_epsilon, 0.01, "");
 DEFINE_double(ndt_step_size, 0.1, "");
 DEFINE_double(ndt_resolution, 1.0, "");
 DEFINE_int32(ndt_maximum_iterations, 100, "");
+DEFINE_bool(ndt_use_default_parameters, true, "");
 
 
 void parseNdtParameters(NdtParameters* params) {
@@ -35,6 +36,7 @@ void parseNdtParameters(NdtParameters* params) {
   params->step_size = FLAGS_ndt_step_size;
   params->resolution = FLAGS_ndt_resolution;
   params->maximum_iterations = FLAGS_ndt_maximum_iterations;
+  params->use_default_parameters = FLAGS_ndt_use_default_parameters;
 }
 
 void loadPointClouds(const NdtParameters& params,
