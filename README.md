@@ -1,14 +1,6 @@
 # Iterative Probabilistic Data Association (IPDA)
+Robust Point Cloud Registration Using One-To-Many Iterative Probabilistic Data Associations ("Robust ICP")
 
-
-# Getting started
-- [Dependencies](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Dependencies)
-- [Installation](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation)
-- [Datasets](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Datasets)
-
-
-
-# Citing
 ### Authors
 - Simone Fontana (simone.fontana@disco.unimib.it)
 - Gabriel Agamennoni (g.agamennoni@gmail.com)
@@ -17,6 +9,12 @@
 ### Maintainers
 - Timo Hinzmann (hitimo@ethz.ch)
 
+# Getting started
+- [Dependencies](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Dependencies)
+- [Installation](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation)
+- [Datasets](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Datasets)
+
+# Citing
 The Iterative Probabilistic Data Association algorithm was introduced by the following paper:
 
 G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Registration with Probabilistic Data Association](https://github.com/ethz-asl/ipda/wiki/0383.pdf)", in International Conference on Intelligent Robots and Systems (IROS), 2016.
