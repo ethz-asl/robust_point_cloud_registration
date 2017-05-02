@@ -1,29 +1,22 @@
 # Iterative Probabilistic Data Association (IPDA)
 
-# Dependencies
-Listed in `install/dependencies.rosinstall`:
-```
-git@github.com:catkin/catkin_simple.git
-git@github.com:ethz-asl/ceres_catkin.git
-git@github.com:ethz-asl/eigen_catkin.git
-git@github.com:ethz-asl/gflags_catkin.git
-git@github.com:ethz-asl/glog_catkin.git
-```
-# Installation
-https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation
 
-# Datasets
-Laser and vision point clouds obtained from a collaborative mission are available at http://projects.asl.ethz.ch/datasets
+# Getting started
+- [Dependencies](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Dependencies)
+- [Installation](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation)
+- [Datasets](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Datasets)
 
-# Authors: 
+
+
+# Citing
+### Authors
 - Simone Fontana (simone.fontana@disco.unimib.it)
 - Gabriel Agamennoni (g.agamennoni@gmail.com)
 - Timo Hinzmann (hitimo@ethz.ch) 
 
-# Maintainers: 
+### Maintainers
 - Timo Hinzmann (hitimo@ethz.ch)
 
-# Citing
 The Iterative Probabilistic Data Association algorithm was introduced by the following paper:
 
 G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Registration with Probabilistic Data Association](https://github.com/ethz-asl/ipda/wiki/0383.pdf)", in International Conference on Intelligent Robots and Systems (IROS), 2016.
