@@ -1,10 +1,27 @@
 # Iterative Probabilistic Data Association (IPDA)
 
-Authors: S. Fontana (simone.fontana@disco.unimib.it), G. Agamennoni (g.agamennoni@gmail.com),T. Hinzmann (hitimo@ethz.ch) <br>
-Maintainers: T. Hinzmann (hitimo@ethz.ch)
-
+# Dependencies
+Listed in `install/dependencies.rosinstall`:
+```
+git@github.com:catkin/catkin_simple.git
+git@github.com:ethz-asl/ceres_catkin.git
+git@github.com:ethz-asl/eigen_catkin.git
+git@github.com:ethz-asl/gflags_catkin.git
+git@github.com:ethz-asl/glog_catkin.git
+```
 # Installation
 https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation
+
+# Datasets
+Laser and vision point clouds obtained from a collaborative mission are available at http://projects.asl.ethz.ch/datasets
+
+# Authors: 
+- Simone Fontana (simone.fontana@disco.unimib.it)
+- Gabriel Agamennoni (g.agamennoni@gmail.com)
+- Timo Hinzmann (hitimo@ethz.ch) 
+
+# Maintainers: 
+- Timo Hinzmann (hitimo@ethz.ch)
 
 # Citing
 The Iterative Probabilistic Data Association algorithm was introduced by the following paper:
@@ -46,15 +63,3 @@ P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stast
 }
 ```
 
-# Datasets
-Laser and vision point clouds obtained from a collaborative mission are available at http://projects.asl.ethz.ch/datasets
-
-# Dependencies
-Listed in `install/dependencies.rosinstall`:
-```
-git@github.com:catkin/catkin_simple.git
-git@github.com:ethz-asl/ceres_catkin.git
-git@github.com:ethz-asl/eigen_catkin.git
-git@github.com:ethz-asl/gflags_catkin.git
-git@github.com:ethz-asl/glog_catkin.git
-```
