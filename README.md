@@ -49,7 +49,11 @@ P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stast
 Laser and vision point clouds obtained from a collaborative mission are available at http://projects.asl.ethz.ch/datasets
 
 # Dependencies
+Listed in `install/dependencies.rosinstall`
 ```
-git@github.com:ethz-asl/thirdparty_submodules.git
-git@github.com:ethz-asl/catkin_simple.git
+git@github.com:catkin/catkin_simple.git
+git@github.com:ethz-asl/ceres_catkin.git
+git@github.com:ethz-asl/eigen_catkin.git
+git@github.com:ethz-asl/gflags_catkin.git
+git@github.com:ethz-asl/glog_catkin.git
 ```
