@@ -1,5 +1,6 @@
 # Iterative Probabilistic Data Association (IPDA)
-Robust Point Cloud Registration Using One-To-Many Iterative Probabilistic Data Associations ("Robust ICP")
+Robust Point Cloud Registration Using One-To-Many Iterative Probabilistic Data Associations ("Robust ICP"). 
+Contains wrappers for ICP, GICP, NDT as well as the source code for IPDA.
 
 ### Authors
 - Simone Fontana (simone.fontana@disco.unimib.it)
@@ -13,6 +14,7 @@ Robust Point Cloud Registration Using One-To-Many Iterative Probabilistic Data A
 # Getting started
 - [Dependencies](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Dependencies)
 - [Installation](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation)
+- [Samples](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Samples)
 - [Datasets](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Datasets)
 
 # Citing
