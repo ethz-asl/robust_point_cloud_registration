@@ -13,10 +13,10 @@
 
 #include "robust_pcl_registration/point_cloud_registration.h"
 
-Pda::Pda(const PdaParameters& params)
+Ipda::Ipda(const IpdaParameters& params)
   : params_(params) {}
 
-void Pda::evaluate(
+void Ipda::evaluate(
     pcl::PointCloud<PointType>::Ptr source_cloud,
     pcl::PointCloud<PointType>::Ptr target_cloud) {
   CHECK(source_cloud);
