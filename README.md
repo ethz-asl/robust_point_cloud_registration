@@ -8,6 +8,7 @@ Robust Point Cloud Registration Using One-To-Many Iterative Probabilistic Data A
 
 ### Maintainers
 - Timo Hinzmann (hitimo@ethz.ch)
+![](https://github.com/ethz-asl/ipda/wiki/ipda.png)
 
 # Getting started
 - [Dependencies](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Dependencies)
@@ -27,7 +28,6 @@ G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Regi
    Year = {2016}
 }
 ```
-![](https://github.com/ethz-asl/ipda/wiki/ipda.png)
 
 The algorithm was successfully employed in the following publications:
 
