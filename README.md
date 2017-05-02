@@ -1,9 +1,11 @@
 # Iterative Probabilistic Data Association (IPDA)
 
-Authors: <br>
-Simone Fontana (simone.fontana@disco.unimib.it)<br>
-Gabriel Agamennoni (g.agamennoni@gmail.com)<br>
+Authors: Simone Fontana (simone.fontana@disco.unimib.it), Gabriel Agamennoni (g.agamennoni@gmail.com),
 Timo Hinzmann (hitimo@ethz.ch)
+Maintainers: Timo Hinzmann (hitimo@ethz.ch)
+
+# Installation
+https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation
 
 # Citing
 The Iterative Probabilistic Data Association algorithm was introduced by the following paper:
@@ -49,7 +51,7 @@ P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stast
 Laser and vision point clouds obtained from a collaborative mission are available at http://projects.asl.ethz.ch/datasets
 
 # Dependencies
-Listed in `install/dependencies.rosinstall`
+Listed in `install/dependencies.rosinstall`:
 ```
 git@github.com:catkin/catkin_simple.git
 git@github.com:ethz-asl/ceres_catkin.git
