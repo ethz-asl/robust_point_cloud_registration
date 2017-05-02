@@ -4,8 +4,8 @@ Contains wrappers for ICP, GICP, NDT as well as the source code for IPDA.
 
 ### Authors
 - Simone Fontana (simone.fontana@disco.unimib.it)
-- Gabriel Agamennoni (g.agamennoni@gmail.com)
 - Timo Hinzmann (hitimo@ethz.ch) 
+- Gabriel Agamennoni (g.agamennoni@gmail.com)
 
 ### Maintainers
 - Timo Hinzmann (hitimo@ethz.ch)
@@ -44,15 +44,5 @@ T. Hinzmann, T. Stastny, G. Conte, P. Doherty, P. Rudol, M. Wzorek, E. Galceran,
   year      = {2016},
 }
 ```
-P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stastny "[A Collaborative Framework for 3D Mapping Using Unmanned Aerial Vehicles](http://www.timohinzmann.com/publications/prima_2016_doherty.pdf)", in International Conference on Principles and Practice of Multi-Agent Systems (PRIMA), 2016.
 
-```
-@inproceedings{DBLP:conf/prima/DohertyKRWCBHS16,
-  author    = {Patrick Doherty and Jonas Kvarnstr{\"{o}}m and Piotr Rudol and Mariusz Wzorek and Gianpaolo Conte and Cyrille Berger and Timo Hinzmann and Thomas Stastny},
-  title     = {A Collaborative Framework for 3D Mapping Using Unmanned Aerial Vehicles},
-  booktitle = {{PRIMA} 2016: Principles and Practice of Multi-Agent Systems - 19th
-               International Conference, Phuket, Thailand, August 22-26, 2016, Proceedings},
-  year      = {2016},
-}
-```
 
