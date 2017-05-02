@@ -6,6 +6,7 @@
 #include <pcl/point_types.h>
 #include <pcl_ros/point_cloud.h>
 #include <ros/ros.h>
+#include <tools/utils.hpp>
 
 #include "external_pcl_registration/gicp.h"
 
@@ -43,13 +44,6 @@ void parseGicpParameters(GicpParameters* params) {
   params->use_default_parameters = FLAGS_gicp_use_default_parameters;
 }
 
-void loadPointClouds(const GicpParameters& params,
-                     pcl::PointCloud<PointType>::Ptr source_cloud,
-                     pcl::PointCloud<PointType>::Ptr target_cloud) {
-  pcl::io::loadPCDFile<PointType>(params.source_cloud_filename, *source_cloud);
-  pcl::io::loadPCDFile<PointType>(params.target_cloud_filename, *target_cloud);
-}
-
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
@@ -65,7 +59,8 @@ int main(int argc, char** argv) {
       boost::make_shared<pcl::PointCloud<PointType> >();
   pcl::PointCloud<PointType>::Ptr target_cloud =
       boost::make_shared<pcl::PointCloud<PointType> >();
-  loadPointClouds(gicp_params, source_cloud, target_cloud);
+  loadPointClouds(gicp_params.source_cloud_filename, gicp_params.target_cloud_filename,
+                  source_cloud, target_cloud);
 
   // Run GICP.
   Gicp gicp(gicp_params);
