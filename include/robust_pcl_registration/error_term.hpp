@@ -16,7 +16,7 @@ class ErrorTerm {
         target_point_(target_point.x, target_point.y, target_point.z),
         weight_(new ceres::LossFunctionWrapper(
             new ceres::ScaledLoss(NULL, 1, ceres::TAKE_OWNERSHIP),
-            ceres::TAKE_OWNERSHIP)){};
+            ceres::TAKE_OWNERSHIP)){}
 
   template <typename T>
   bool operator()(const T* const rotation, const T* const translation,

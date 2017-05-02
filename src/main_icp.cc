@@ -6,6 +6,7 @@
 #include <pcl/point_types.h>
 #include <pcl_ros/point_cloud.h>
 #include <ros/ros.h>
+#include <tools/utils.hpp>
 
 #include "external_pcl_registration/icp.h"
 
@@ -21,7 +22,6 @@ DEFINE_bool(icp_save_aligned_cloud, true, "");
 DEFINE_bool(icp_visualize_clouds, true, "");
 DEFINE_string(icp_frame_id, "", "");
 
-
 void parseIcpParameters(IcpParameters* params) {
   params->max_neighbours = FLAGS_icp_max_neighbours;
   params->radius = FLAGS_icp_radius;
@@ -31,13 +31,6 @@ void parseIcpParameters(IcpParameters* params) {
   params->visualize_clouds = FLAGS_icp_visualize_clouds;
   params->save_aligned_cloud = FLAGS_icp_save_aligned_cloud;
   params->frame_id = FLAGS_icp_frame_id;
-}
-
-void loadPointClouds(const IcpParameters& params,
-                     pcl::PointCloud<PointType>::Ptr source_cloud,
-                     pcl::PointCloud<PointType>::Ptr target_cloud) {
-  pcl::io::loadPCDFile<PointType>(params.source_cloud_filename, *source_cloud);
-  pcl::io::loadPCDFile<PointType>(params.target_cloud_filename, *target_cloud);
 }
 
 int main(int argc, char** argv) {
@@ -55,7 +48,8 @@ int main(int argc, char** argv) {
       boost::make_shared<pcl::PointCloud<PointType> >();
   pcl::PointCloud<PointType>::Ptr target_cloud =
       boost::make_shared<pcl::PointCloud<PointType> >();
-  loadPointClouds(icp_params, source_cloud, target_cloud);
+  loadPointClouds(icp_params.source_cloud_filename, icp_params.target_cloud_filename,
+                  source_cloud, target_cloud);
 
   // Run ICP.
   Icp icp(icp_params);

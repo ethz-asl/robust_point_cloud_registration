@@ -6,6 +6,7 @@
 #include <pcl/point_types.h>
 #include <pcl_ros/point_cloud.h>
 #include <ros/ros.h>
+#include <tools/utils.hpp>
 
 #include "external_pcl_registration/ndt.h"
 
@@ -24,7 +25,6 @@ DEFINE_double(ndt_resolution, 1.0, "");
 DEFINE_int32(ndt_maximum_iterations, 100, "");
 DEFINE_bool(ndt_use_default_parameters, true, "");
 
-
 void parseNdtParameters(NdtParameters* params) {
   params->source_cloud_filename = FLAGS_ndt_source_cloud_filename;
   params->target_cloud_filename = FLAGS_ndt_target_cloud_filename;
@@ -37,13 +37,6 @@ void parseNdtParameters(NdtParameters* params) {
   params->resolution = FLAGS_ndt_resolution;
   params->maximum_iterations = FLAGS_ndt_maximum_iterations;
   params->use_default_parameters = FLAGS_ndt_use_default_parameters;
-}
-
-void loadPointClouds(const NdtParameters& params,
-                     pcl::PointCloud<PointType>::Ptr source_cloud,
-                     pcl::PointCloud<PointType>::Ptr target_cloud) {
-  pcl::io::loadPCDFile<PointType>(params.source_cloud_filename, *source_cloud);
-  pcl::io::loadPCDFile<PointType>(params.target_cloud_filename, *target_cloud);
 }
 
 int main(int argc, char** argv) {
@@ -61,7 +54,8 @@ int main(int argc, char** argv) {
       boost::make_shared<pcl::PointCloud<PointType> >();
   pcl::PointCloud<PointType>::Ptr target_cloud =
       boost::make_shared<pcl::PointCloud<PointType> >();
-  loadPointClouds(ndt_params, source_cloud, target_cloud);
+  loadPointClouds(ndt_params.source_cloud_filename, ndt_params.target_cloud_filename,
+                  source_cloud, target_cloud);
 
   // Run NDT.
   Ndt ndt(ndt_params);
