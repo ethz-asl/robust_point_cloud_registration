@@ -44,7 +44,7 @@ T. Hinzmann, T. Stastny, G. Conte, P. Doherty, P. Rudol, M. Wzorek, E. Galceran,
   year      = {2016},
 }
 ```
-P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stastny "[A Collaborative Framework for 3D Mapping Using Unmanned Aerial Vehicles](http://hitimo.de/publications/prima_2016_doherty.pdf)", in International Conference on Principles and Practice of Multi-Agent Systems (PRIMA), 2016.
+P. Doherty, J. Kvarnstroem, P. Rudol, G. Conte, C. Berger, T. Hinzmann, T. Stastny "[A Collaborative Framework for 3D Mapping Using Unmanned Aerial Vehicles](http://www.timohinzmann.com/publications/prima_2016_doherty.pdf)", in International Conference on Principles and Practice of Multi-Agent Systems (PRIMA), 2016.
 
 ```
 @inproceedings{DBLP:conf/prima/DohertyKRWCBHS16,
