@@ -11,7 +11,7 @@
 
 typedef pcl::PointXYZ PointType;
 
-struct PdaParameters {
+struct IpdaParameters {
   bool save_aligned_cloud;
   bool solver_minimizer_progress_to_stdout;
   bool solver_use_nonmonotonic_steps;
@@ -37,14 +37,14 @@ struct PdaParameters {
   std::string target_cloud_filename;
 };
 
-class Pda {
+class Ipda {
  public:
-    Pda(const PdaParameters& params);
-    void evaluate(
-        pcl::PointCloud<PointType>::Ptr source_cloud,
-        pcl::PointCloud<PointType>::Ptr target_cloud);
+  Ipda(const IpdaParameters& params);
+  void evaluate(
+      pcl::PointCloud<PointType>::Ptr source_cloud,
+      pcl::PointCloud<PointType>::Ptr target_cloud);
  private:
-  PdaParameters params_;
+  IpdaParameters params_;
   std::shared_ptr<pcl::visualization::PCLVisualizer> viewer_;
 };
 #endif // PDA_H_

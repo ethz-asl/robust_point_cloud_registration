@@ -35,7 +35,7 @@ DEFINE_string(ipda_frame_id, "", "");
 DEFINE_string(ipda_source_cloud_filename, "", "");
 DEFINE_string(ipda_target_cloud_filename, "", "");
 
-void parseIpdaParameters(PdaParameters* params) {
+void parseIpdaParameters(IpdaParameters* params) {
   params->save_aligned_cloud = FLAGS_ipda_save_aligned_cloud;
   params->solver_minimizer_progress_to_stdout = FLAGS_ipda_solver_minimizer_progress_to_stdout;
   params->solver_use_nonmonotonic_steps = FLAGS_ipda_solver_use_nonmonotonic_steps;
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
   ros::Time::init();
 
   // Load the IPDA parameters.
-  PdaParameters ipda_params;
+  IpdaParameters ipda_params;
   parseIpdaParameters(&ipda_params);
 
   // Load source and target pointcloud.
@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
                   source_cloud, target_cloud);
 
   // Run IPDA.
-  Pda ipda(ipda_params);
+  Ipda ipda(ipda_params);
   ipda.evaluate(source_cloud, target_cloud);
 
   return 0;
