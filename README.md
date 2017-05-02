@@ -31,7 +31,7 @@ G. Agamennoni, S. Fontana, R. Y. Siegwart and D. G. Sorrenti "[Point Clouds Regi
 }
 ```
 
-The algorithm was successfully employed in the following publications:
+The algorithm was successfully employed in the following publication:
 
 T. Hinzmann, T. Stastny, G. Conte, P. Doherty, P. Rudol, M. Wzorek, E. Galceran, R. Siegwart, I. Gilitschenski "[Collaborative 3D Reconstruction using Heterogeneous UAVs: System and Experiments](http://www.timohinzmann.com/publications/iser_2016_hinzmann.pdf)", in The 15th International Symposium on Experimental Robotics (ISER), 2016.
 
