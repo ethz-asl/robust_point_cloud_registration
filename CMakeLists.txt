@@ -10,7 +10,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 cs_add_library(${PROJECT_NAME}
   src/robust_pcl_registration/point_cloud_registration.cc
-  #src/robust_pcl_registration/point_cloud_registration_iteration.cc
   src/robust_pcl_registration/pda.cc
   src/external_pcl_registration/gicp.cc
   src/external_pcl_registration/icp.cc
@@ -29,8 +28,8 @@ cs_add_executable(ndt src/main_ndt.cc)
 target_link_libraries(ndt ${PROJECT_NAME})
 
 # Pointcloud alignment using IPDA ("Robust ICP").
-#cs_add_executable(icp src/main.cc)
-#target_link_libraries(icp ${PROJECT_NAME})
+cs_add_executable(ipda src/main_ipda.cc)
+target_link_libraries(ipda ${PROJECT_NAME})
 
 # Executable to convert pointcloud .xyz to .pcd format.
 cs_add_executable(xyz_to_pcd src/main_xyz_to_pcd.cc)

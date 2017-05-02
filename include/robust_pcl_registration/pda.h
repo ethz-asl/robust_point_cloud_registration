@@ -12,14 +12,29 @@
 typedef pcl::PointXYZ PointType;
 
 struct PdaParameters {
-  int max_neighbours;
+  bool save_aligned_cloud;
+  bool solver_minimizer_progress_to_stdout;
+  bool solver_use_nonmonotonic_steps;
   bool use_gaussian;
+  bool visualize_clouds;
+  double dof;
+  double point_size_aligned_source;
+  double point_size_source;
+  double point_size_target;
   double radius;
-  std::string source_cloud;
-  std::string target_cloud;
+  double solver_function_tolerance;
   double source_filter_size;
   double target_filter_size;
-  int dof;
+  double transformation_epsilon;
+  int dimension;
+  int maximum_iterations;
+  int max_neighbours;
+  int solver_maximum_iterations;
+  int solver_num_threads;
+  std::string aligned_cloud_filename;
+  std::string frame_id;
+  std::string source_cloud_filename;
+  std::string target_cloud_filename;
 };
 
 class Pda {
@@ -27,10 +42,9 @@ class Pda {
     Pda(const PdaParameters& params);
     void evaluate(
         pcl::PointCloud<PointType>::Ptr source_cloud,
-        pcl::PointCloud<PointType>::Ptr target_cloud,
-        double translation);
+        pcl::PointCloud<PointType>::Ptr target_cloud);
  private:
   PdaParameters params_;
+  std::shared_ptr<pcl::visualization::PCLVisualizer> viewer_;
 };
-
 #endif // PDA_H_

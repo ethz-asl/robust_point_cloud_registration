@@ -12,122 +12,117 @@
 #include <pcl/visualization/pcl_visualizer.h>
 
 #include "robust_pcl_registration/point_cloud_registration.h"
-//#include "prob_point_cloud_registration/point_cloud_registration_iteration.h"
 
 Pda::Pda(const PdaParameters& params)
   : params_(params) {}
 
 void Pda::evaluate(
     pcl::PointCloud<PointType>::Ptr source_cloud,
-    pcl::PointCloud<PointType>::Ptr target_cloud,
-    double translation) {
-  VLOG(1) << "Evaluating PDA";
-  Eigen::Affine3d transform = Eigen::Affine3d::Identity();
-  transform.translation() << translation, 0.0, 0.0;
-  pcl::transformPointCloud(*source_cloud, *source_cloud, transform);
+    pcl::PointCloud<PointType>::Ptr target_cloud) {
+  CHECK(source_cloud);
+  CHECK(target_cloud);
 
-//    pcl::PointCloud<PointType>::Ptr filtered_source_cloud =
-//        boost::make_shared<pcl::PointCloud<PointType>>();
-//    if (params_.source_filter_size > 0) {
-//    pcl::VoxelGrid<PointType> filter;
-//    filter.setInputCloud(source_cloud);
-//    filter.setLeafSize(params_.source_filter_size,
-//                       params_.source_filter_size,
-//                       params_.source_filter_size);
-//    filter.filter(*filtered_source_cloud);
-//    }
-//    *source_cloud = *filtered_source_cloud;
-
-  // Set Kd Tree
-  VLOG(1) << "KdTree";
-  pcl::KdTreeFLANN<PointType> kdtree;
-  kdtree.setInputCloud(target_cloud);
-  std::vector<float> distances;
-  Eigen::SparseMatrix<int, Eigen::RowMajor> data_association(source_cloud->size(),
-                                                             target_cloud->size());
-  std::vector<Eigen::Triplet<int> > tripletList;
-  for (std::size_t i = 0u; i < source_cloud->size(); i++) {
-    std::vector<int> neighbours;
-    kdtree.radiusSearch(*source_cloud, i,
-                        params_.radius, neighbours, distances,
-                        params_.max_neighbours);
-    for (int j : neighbours) {
-      tripletList.push_back(Eigen::Triplet<int>(i, j, 1));
-    }
-  }
-  data_association.setFromTriplets(tripletList.begin(), tripletList.end());
-  data_association.makeCompressed();
-
-  point_cloud_registration::PointCloudRegistrationParams params;
-  VLOG(1) << "Running optimization";
-//  prob_point_cloud_registration::PointCloudRegistrationParams params;
-  params.dof = std::numeric_limits<double>::infinity();
-  params.max_neighbours = params_.max_neighbours;
-  params.dimension = 3;
-//  prob_point_cloud_registration::PointCloudRegistrationIteration
-//      registration(*source_cloud, *target_cloud, data_association, params);
-
-  point_cloud_registration::PointCloudRegistration registration(
-        *source_cloud, *target_cloud, data_association, params);
-  ceres::Solver::Options options;
-  options.linear_solver_type = ceres::DENSE_QR;
-  options.use_nonmonotonic_steps = true;
-  options.minimizer_progress_to_stdout = false;
-  options.max_num_iterations = 100;//std::numeric_limits<int>::max();
-  options.function_tolerance = 10e-16;
-  options.num_threads = 8;
-  ceres::Solver::Summary summary;
-  VLOG(1) << "Solve.";
-  registration.solve(options, &summary);
-
-  VLOG(3) << summary.FullReport();
-
-  auto estimated_transform = registration.transformation();
-  std::cout << "estimated_transform = " << estimated_transform.translation()
-            << std::endl;
-
-
-  //std::string aligned_source_name = "aligned_" + source_file_name;
-  //ROS_INFO("Saving aligned source cloud to: %s", aligned_source_name.c_str());
-  // pcl::io::savePCDFile(aligned_source_name, *aligned_source);
+  Eigen::Affine3d final_transformation, previous_transformation, I_3;
+  final_transformation.setIdentity();
+  previous_transformation.setIdentity();
+  I_3.setIdentity();
 
   pcl::PointCloud<PointType>::Ptr aligned_source =
-      boost::make_shared<pcl::PointCloud<PointType>>();
-  pcl::transformPointCloud (*source_cloud, *aligned_source, estimated_transform);
-  source_cloud->header.frame_id = "map";
-  target_cloud->header.frame_id = "map";
-  aligned_source->header.frame_id = "map";
-{
-  std::shared_ptr<pcl::visualization::PCLVisualizer> viewer
-      (new pcl::visualization::PCLVisualizer ("3D Viewer"));
-  //pcl::visualization::PCLVisualizer viewer;
-  viewer->setBackgroundColor (255, 255, 255);
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
-      source_cloud_handler(source_cloud, 255, 0, 0);
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
-      target_cloud_handler(target_cloud, 0, 255, 0);
-  pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
-      aligned_source_handler(aligned_source, 0, 0, 255);
-  viewer->addPointCloud<pcl::PointXYZ>(source_cloud, source_cloud_handler, "source");
-  viewer->addPointCloud<pcl::PointXYZ> (target_cloud, target_cloud_handler, "target");
-  //viewer->addPointCloud<pcl::PointXYZ> (aligned_source, aligned_source_handler, "aligned source");
-  viewer->spin();
-  }
+      boost::make_shared<pcl::PointCloud<PointType> >();
+  *aligned_source = *source_cloud;
+  CHECK(aligned_source);
 
-  {
-    std::shared_ptr<pcl::visualization::PCLVisualizer> viewer
-        (new pcl::visualization::PCLVisualizer ("3D Viewer"));
-    //pcl::visualization::PCLVisualizer viewer;
-    viewer->setBackgroundColor (255, 255, 255);
-    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
+  if (params_.visualize_clouds) {
+    source_cloud->header.frame_id = params_.frame_id;
+    target_cloud->header.frame_id = params_.frame_id;
+    aligned_source->header.frame_id = params_.frame_id;
+    viewer_.reset(new pcl::visualization::PCLVisualizer ("IPDA: source(red), target(green), aligned(blue)"));
+    viewer_->setBackgroundColor(255, 255, 255);
+    pcl::visualization::PointCloudColorHandlerCustom<PointType>
         source_cloud_handler(source_cloud, 255, 0, 0);
-    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
+    pcl::visualization::PointCloudColorHandlerCustom<PointType>
         target_cloud_handler(target_cloud, 0, 255, 0);
-    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ>
+    pcl::visualization::PointCloudColorHandlerCustom<PointType>
         aligned_source_handler(aligned_source, 0, 0, 255);
-    //viewer->addPointCloud<pcl::PointXYZ>(source_cloud, source_cloud_handler, "source");
-    viewer->addPointCloud<pcl::PointXYZ> (target_cloud, target_cloud_handler, "target");
-    viewer->addPointCloud<pcl::PointXYZ> (aligned_source, aligned_source_handler, "aligned source");
-    viewer->spin();
+    viewer_->addPointCloud<PointType>(source_cloud, source_cloud_handler, "source");
+    viewer_->addPointCloud<PointType>(target_cloud, target_cloud_handler, "target");
+    viewer_->addPointCloud<PointType>(aligned_source, aligned_source_handler, "aligned_source");
+    viewer_->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE,
+                                             params_.point_size_target, "target");
+    viewer_->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE,
+                                             params_.point_size_source, "source");
+    viewer_->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE,
+                                             params_.point_size_aligned_source, "aligned_source");
+    viewer_->spinOnce();
+  }
+  point_cloud_registration::PointCloudRegistrationParams params;
+  params.dof = params_.dof;
+  params.max_neighbours = params_.max_neighbours;
+  params.dimension = params_.dimension;
+
+  // Solver parameters.
+  ceres::Solver::Options options;
+  options.linear_solver_type = ceres::DENSE_QR;
+  options.use_nonmonotonic_steps = params_.solver_use_nonmonotonic_steps;
+  options.minimizer_progress_to_stdout = params_.solver_minimizer_progress_to_stdout;
+  options.max_num_iterations = params_.solver_maximum_iterations;
+  options.function_tolerance = params_.solver_function_tolerance;
+  options.num_threads = params_.solver_num_threads;
+  ceres::Solver::Summary summary;
+
+  for (size_t iter = 0u; iter < params_.maximum_iterations; ++iter) {
+    pcl::KdTreeFLANN<PointType> kdtree;
+    kdtree.setInputCloud(target_cloud);
+    std::vector<float> distances;
+    Eigen::SparseMatrix<int, Eigen::RowMajor> data_association(aligned_source->size(),
+                                                               target_cloud->size());
+    std::vector<Eigen::Triplet<int> > tripletList;
+    for (std::size_t i = 0u; i < aligned_source->size(); i++) {
+      std::vector<int> neighbours;
+      kdtree.radiusSearch((*aligned_source)[i],
+                          params_.radius, neighbours, distances, params_.max_neighbours);
+      for (int j : neighbours) {
+        tripletList.push_back(Eigen::Triplet<int>(i, j, 1));
+      }
+    }
+    data_association.setFromTriplets(tripletList.begin(), tripletList.end());
+    data_association.makeCompressed();
+
+    point_cloud_registration::PointCloudRegistration registration(
+          *aligned_source, *target_cloud, data_association, params);
+    registration.solve(options, &summary);
+    VLOG(100) << summary.FullReport();
+
+    const Eigen::Affine3d current_transformation = registration.transformation();
+    final_transformation = current_transformation * final_transformation;
+    LOG(INFO) << "Current Transformation: " << std::endl << final_transformation.matrix();
+    pcl::transformPointCloud(*aligned_source, *aligned_source, current_transformation);
+
+    if (params_.visualize_clouds) {
+      source_cloud->header.frame_id = params_.frame_id;
+      target_cloud->header.frame_id = params_.frame_id;
+      aligned_source->header.frame_id = params_.frame_id;
+      pcl::visualization::PointCloudColorHandlerCustom<PointType>
+          source_cloud_handler(source_cloud, 255, 0, 0);
+      pcl::visualization::PointCloudColorHandlerCustom<PointType>
+          target_cloud_handler(target_cloud, 0, 255, 0);
+      pcl::visualization::PointCloudColorHandlerCustom<PointType>
+          aligned_source_handler(aligned_source, 0, 0, 255);
+      viewer_->updatePointCloud(source_cloud, source_cloud_handler, "source");
+      viewer_->updatePointCloud(target_cloud, target_cloud_handler, "target");
+      viewer_->updatePointCloud(aligned_source, aligned_source_handler, "aligned_source");
+      viewer_->spinOnce();
+    }
+
+    // Check convergence.
+    const double transformation_epsilon =
+        ((current_transformation * previous_transformation.inverse()).matrix()
+         - Eigen::Matrix4d::Identity()).norm();
+    LOG(INFO) << "Transformation epsilon: " << transformation_epsilon;
+    if (transformation_epsilon < params_.transformation_epsilon) {
+      LOG(INFO) << "IPDA converged." << std::endl;
+      return;
+    }
+    previous_transformation = current_transformation;
   }
 }
