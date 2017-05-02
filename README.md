@@ -1,8 +1,7 @@
 # Iterative Probabilistic Data Association (IPDA)
 
-Authors: Simone Fontana (simone.fontana@disco.unimib.it), Gabriel Agamennoni (g.agamennoni@gmail.com),
-Timo Hinzmann (hitimo@ethz.ch)
-Maintainers: Timo Hinzmann (hitimo@ethz.ch)
+Authors: S. Fontana (simone.fontana@disco.unimib.it), G. Agamennoni (g.agamennoni@gmail.com),T. Hinzmann (hitimo@ethz.ch) <br>
+Maintainers: T. Hinzmann (hitimo@ethz.ch)
 
 # Installation
 https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation
