@@ -16,6 +16,7 @@ Contains wrappers for ICP, GICP, NDT as well as the source code for IPDA.
 - [Installation](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Installation)
 - [Samples](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Samples)
 - [Datasets](https://github.com/ethz-asl/robust_point_cloud_registration/wiki/Datasets)
+- [Jenkins](http://129.132.38.183:8080/job/robust_point_cloud_registration/)
 
 # Citing
 The Iterative Probabilistic Data Association algorithm was introduced by the following paper:
